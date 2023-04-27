@@ -6,7 +6,7 @@
 /*   By: smokashi <smokashi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 11:24:13 by smokashi          #+#    #+#             */
-/*   Updated: 2022/07/22 19:37:09 by smokashi         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:07:35 by smokashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,24 @@ void	fn(int t, unsigned char c, int pid)
 		}
 		else
 			kill(pid, SIGUSR2);
-		usleep(1000);
+		usleep(150);
 		t = t / 2;
 	}
 }
 
 void	gotit(int sig)
 {
-	if (sig == SIGUSR2)
-		write(1, "Msg acknowledged\n", 18);
-	exit(0);
+	if (sig == SIGUSR1)
+		write(1, "Msg acknowledged with SIGUSR1\n", 30);
+	exit(1);
 }
+
+// void	gotitfor2(int sig)
+// {
+// 	if (sig == SIGUSR2)
+// 		write(1, "Msg acknowledged with SIGUSR2\n", 30);
+// 	exit(1);
+// }
 
 int	main(int ac, char **agv)
 {
@@ -83,11 +90,10 @@ int	main(int ac, char **agv)
 			i++;
 		}
 		fn(128, '\0', pid);
-		usleep(100);
-		signal (SIGUSR2, gotit);
+		signal (SIGUSR1, gotit);
 		while (1)
 			;
 	}
 	else
-		write(1, "only 2 args, first pid and second as string allowed\n", 53);
+		write(1, "only 2 args, first pid and second as string allowed\n", 52);
 }

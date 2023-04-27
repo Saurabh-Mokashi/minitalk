@@ -6,7 +6,7 @@
 /*   By: smokashi <smokashi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 11:13:58 by smokashi          #+#    #+#             */
-/*   Updated: 2022/07/21 14:06:05 by smokashi         ###   ########.fr       */
+/*   Updated: 2023/04/27 16:50:44 by smokashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ void	sighandle(int sig, siginfo_t *siginfo, void *hrl)
 		i = 0;
 		if (c == '\0')
 		{
-			usleep(220);
-			j = kill(siginfo->si_pid, SIGUSR2);
+			usleep(300);
+			j = kill(siginfo->si_pid, SIGUSR1);
 		}
 		else
 			write (1, &c, 1);
@@ -142,18 +142,24 @@ void	sighandle(int sig, siginfo_t *siginfo, void *hrl)
 		c = c << 1;
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int					a;
 	struct sigaction	sa;
 
-	a = getpid();
-	ft_putnbr_fd(a, 1);
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = sighandle;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-	while (1)
-		;
-	return (0);
+	(void) argv;
+	if (argc == 1)
+	{
+		a = getpid();
+		ft_putnbr_fd(a, 1);
+		sa.sa_flags = SA_SIGINFO;
+		sa.sa_sigaction = sighandle;
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
+		while (1)
+			;
+		return (0);
+	}
+	else
+		write(1, "Wrong format \"./server_bonus\"\n", 30);
 }
