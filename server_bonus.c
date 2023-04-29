@@ -6,7 +6,7 @@
 /*   By: smokashi <smokashi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 11:13:58 by smokashi          #+#    #+#             */
-/*   Updated: 2023/04/27 16:50:44 by smokashi         ###   ########.fr       */
+/*   Updated: 2023/04/29 19:19:19 by smokashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,12 @@ void	ft_putnbr_fd(int p, int fd)
 
 void	sighandle(int sig, siginfo_t *siginfo, void *hrl)
 {
-	static int	i = 0;
-	static char	c = 0;
+	static int	i;
+	static char	c;
 	int			j;
 
 	(void)hrl;
+	c = c << 1;
 	if (sig == SIGUSR1)
 		c = c | 1;
 	i++;
@@ -138,8 +139,6 @@ void	sighandle(int sig, siginfo_t *siginfo, void *hrl)
 			write (1, &c, 1);
 		c = 0;
 	}
-	else
-		c = c << 1;
 }
 
 int	main(int argc, char **argv)
@@ -157,7 +156,7 @@ int	main(int argc, char **argv)
 		sigaction(SIGUSR1, &sa, NULL);
 		sigaction(SIGUSR2, &sa, NULL);
 		while (1)
-			;
+			pause();
 		return (0);
 	}
 	else

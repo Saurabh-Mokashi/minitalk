@@ -6,7 +6,7 @@
 /*   By: smokashi <smokashi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 13:15:45 by smokashi          #+#    #+#             */
-/*   Updated: 2023/04/27 17:05:44 by smokashi         ###   ########.fr       */
+/*   Updated: 2023/04/29 19:42:00 by smokashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,31 @@ int	ft_atoi(const char *str)
 		return (0);
 	return (num * sign);
 }
+	// int	i;
+	// int	j;
 
-void	fn(int t, unsigned char c, int pid)
+	// i = 7;
+	// j = 0;
+	// while (i >= 0)
+	// {
+	// 	if ((c >> i & 1) == 1)
+	// 		j = kill(pid, SIGUSR1);
+	// 	else
+	// 		j = kill(pid, SIGUSR2);
+	// 	usleep(150);
+	// 	i--;
+	// }
+	// if (j == -1)
+	// {
+	// 	write(1, "Kill function failed. Check PID.\n", 33);
+	// 	exit (1);
+	// }
+
+void	fn(unsigned char c, int pid)
 {
+	int	t;
+
+	t = 128;
 	while (t > 0)
 	{
 		if (c / t == 1)
@@ -59,6 +81,21 @@ void	fn(int t, unsigned char c, int pid)
 	}
 }
 
+int	check(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			i++;
+		else
+			return (1);
+	}
+	return (0);
+}
+
 int	main(int ac, char **agv)
 {
 	int		i;
@@ -68,11 +105,11 @@ int	main(int ac, char **agv)
 	if (ac == 3)
 	{
 		pid = ft_atoi(agv[1]);
-		if (pid <= 0)
+		if (pid <= 0 || check(agv[1]))
 			return (0);
 		while (agv[2][i])
 		{
-			fn(128, agv[2][i], pid);
+			fn(agv[2][i], pid);
 			i++;
 		}
 	}

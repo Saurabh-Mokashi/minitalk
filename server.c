@@ -6,7 +6,7 @@
 /*   By: smokashi <smokashi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 13:15:35 by smokashi          #+#    #+#             */
-/*   Updated: 2023/04/27 16:51:12 by smokashi         ###   ########.fr       */
+/*   Updated: 2023/04/29 19:33:41 by smokashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,14 @@ void	ft_putnbr_fd(int p, int fd)
 	else
 		n = (long int)(p);
 	rec(n, fd);
-	write(1, "\n", 1);
 }
 
 void	sighandle(int sig)
 {
-	static int	i = 0;
-	static char	c = 0;
+	static int	i;
+	static char	c;
 
+	c = c << 1;
 	if (sig == SIGUSR1)
 		c = c | 1;
 	i++;
@@ -135,17 +135,15 @@ void	sighandle(int sig)
 	{
 		i = 0;
 		write (1, &c, 1);
-		usleep(250);
 		c = 0;
 	}
-	else
-		c = c << 1;
 }
 
 int	main(int ac, char **agv)
 {
 	int	a;
 
+	(void) agv;
 	if (ac != 1)
 	{
 		write(1, "Wrong format \"./server\"\n", 24);
@@ -153,9 +151,10 @@ int	main(int ac, char **agv)
 	}
 	a = getpid();
 	ft_putnbr_fd(a, 1);
+	write(1, "\n", 1);
 	signal(SIGUSR1, sighandle);
 	signal(SIGUSR2, sighandle);
 	while (1)
-		;
+		pause();
 	return (0);
 }
